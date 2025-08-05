@@ -4,20 +4,25 @@ from gameparts import Board
 from gameparts.exceptions import CellOccupiedError, FieldIndexError
 
 
+# Вот она - новая функция!
+def save_result(result):
+    # Открыть файл results.txt в режиме "добавление".
+    # Если нужно явно указать кодировку, добавьте параметр encoding='utf-8'.
+    with open('results.txt', 'a', encoding='utf-8') as f:
+        f.write(result + '\n')
+
+
 def main():
     game = Board()
     # Первыми ходят крестики.
     current_player = 'X'
-    # Это флаговая переменная. По умолчанию игра запущена и продолжается.
     running = True
     game.display()
 
-    # Тут запускается основной цикл игры.
     while running:
 
-        print(f'Ход делают {current_player}')
+        print(f'Ходит {current_player}')
 
-        # Запускается бесконечный цикл.
         while True:
             try:
                 row = int(input('Введите номер строки: '))
@@ -27,7 +32,6 @@ def main():
                 if column < 0 or column >= game.field_size:
                     raise FieldIndexError
                 if game.board[row][column] != ' ':
-                    # Вот тут выбрасывается новое исключение.
                     raise CellOccupiedError
             except FieldIndexError:
                 print(
@@ -37,7 +41,7 @@ def main():
                 print('Введите значения для строки и столбца заново.')
                 continue
             except CellOccupiedError:
-                print('Ячейка занята')
+                print('Ячейка занята.')
                 print('Введите другие координаты.')
                 continue
             except ValueError:
@@ -49,17 +53,25 @@ def main():
             else:
                 break
 
-        # Теперь для установки значения на поле само значение берётся
-        # из переменной current_player.
         game.make_move(row, column, current_player)
         game.display()
-        # После каждого хода надо делать проверку на победу и на ничью.
         if game.check_win(current_player):
-            print(f'Победили {current_player}.')
+            # Сформировать строку.
+            result = f'Победили {current_player}.'
+            # Вывести строку на печать.
+            print(result)
+            # Добавить строку в файл.
+            save_result(result)
             running = False
         elif game.is_board_full():
-            print('Ничья!')
+            # Сформировать строку.
+            result = 'Ничья!'
+            # Вывести строку на печать.
+            print(result)
+            # Добавить строку в файл.
+            save_result(result)
             running = False
+
         current_player = 'O' if current_player == 'X' else 'X'
 
 
