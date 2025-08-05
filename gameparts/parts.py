@@ -45,9 +45,8 @@ class Board:
             return True
 
         return False
+# Переопределяем метод __str__.
 
-
-    # Переопределяем метод __str__.
     def __str__(self):
         return (
             'Объект игрового поля размером '
