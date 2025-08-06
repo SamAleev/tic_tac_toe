@@ -14,10 +14,12 @@ class Board:
     def make_move(self, row, col, player):
         self.board[row][col] = player
 
-    def display(self):
-        for row in self.board:
-            print('|'.join(row))
-            print('-' * 5)
+# только для консольной версии
+
+    # def display(self):
+    #     for row in self.board:
+    #         print('|'.join(row))
+    #         print('-' * 5)
 
     def is_board_full(self):
         # Цикл проходится по всем столбцам игрового поля.
